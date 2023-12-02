@@ -3,14 +3,14 @@
 #include <vector>
 #include <fstream>
 
-int main()
+std::vector<std::string> readLinesFromFile(const std::string &filename)
 {
-    std::ifstream input("input.txt");
+    std::ifstream input(filename);
 
     if (!input.is_open())
     {
-        std::cout << "Could not open file" << std::endl;
-        return 1;
+        std::cerr << "Could not open file: " << filename << std::endl;
+        return {}; // Return an empty vector if the file cannot be opened
     }
 
     std::vector<std::string> lines;
@@ -22,6 +22,13 @@ int main()
     }
 
     input.close();
+
+    return lines;
+}
+
+int main()
+{
+    std::vector<std::string> lines = readLinesFromFile("input.txt");
 
     int sum = 0;
 
