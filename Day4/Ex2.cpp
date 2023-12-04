@@ -76,26 +76,27 @@ vector<string> readLinesFromFile(const string &filename)
 
 int main()
 {
-    // vector<string> lines = readLinesFromFile("input.txt");
+    vector<string> lines = readLinesFromFile("input.txt");
 
+    /*
     vector<string> lines = {"Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53",
                             "Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19",
                             "Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1",
                             "Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83",
                             "Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36",
                             "Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11"};
-
+*/
     int sum = 0;
 
-    vector<int> numOfCards;
+    // Create a vector to hold the number of cards with each number
+    vector<int> numOfCards(lines.size() + 1, 0);
 
-    // NEEDS TO COUNT AMOUNT UP
     for (auto line : lines)
     {
         int matches = 0;
         CardData cardData = processCardData(line);
 
-        cout << "Card " << cardData.cardNum << endl;
+        numOfCards[cardData.cardNum]++;
 
         // Loop through all left numbers and check if they are in the right numbers
         for (auto leftNum : cardData.leftNums)
@@ -108,12 +109,25 @@ int main()
                 }
             }
         }
-        cout << "Matches: " << matches << endl;
+
+        if (matches > 0)
+        {
+            // Increment the number of cards with the current card number by the number of matches
+            for (int j = 1; j <= matches; j++)
+            {
+                for (int k = 0; k < numOfCards[cardData.cardNum]; k++)
+                {
+                    numOfCards[cardData.cardNum + j]++;
+                }
+            }
+        }
+
         matches = 0;
     }
 
-    for (int i = 0; i < numOfCards.size(); i++)
+    for (int i = 1; i < numOfCards.size(); i++)
     {
+        cout << "Card " << i << ": " << numOfCards[i] << endl;
         sum += numOfCards[i];
     }
 
